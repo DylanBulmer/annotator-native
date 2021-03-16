@@ -11,6 +11,11 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -37,7 +42,9 @@
     "@babel/core": "~7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "husky": "^5.1.3",
     "jest-expo": "~40.0.0",
+    "pretty-quick": "^3.1.0",
     "typescript": "~4.0.0"
   },
   "private": true
