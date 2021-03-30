@@ -8,12 +8,12 @@ export default {
         screens: {
           Login: {
             screens: {
-              LoginScreen: 'login',
+              LoginScreen: 'LoginScreen',
             },
           },
           Home: {
             screens: {
-              HomeScreen: 'home',
+              HomeScreen: 'HomeScreen',
             },
           },
         },

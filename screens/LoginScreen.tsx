@@ -1,9 +1,9 @@
+import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
-import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { AppParamList } from "../types";
 
@@ -24,8 +24,8 @@ export default function LoginScreen({
         onPress={() => {
           navigation.reset({
             index: 1,
-            routes: [{name: "HomeScreen"}]
-          })
+            routes: [{ name: "HomeScreen" }],
+          });
         }}
       >
         Login
