@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "annotator-native",
-    "slug": "annotator-native",
+    "slug": "annotator",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "annotator",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
