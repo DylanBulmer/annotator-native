@@ -1,11 +1,10 @@
-import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
 
 import { Text, View } from "../components/Themed";
 import { AppParamList } from "../types";
+import GoogleLogIn from "../utils/google";
 
 export default function LoginScreen({
   navigation,
@@ -20,16 +19,7 @@ export default function LoginScreen({
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Button
-        onPress={() => {
-          navigation.reset({
-            index: 1,
-            routes: [{ name: "HomeScreen" }],
-          });
-        }}
-      >
-        Login
-      </Button>
+      <GoogleLogIn />
     </View>
   );
 }

@@ -3,6 +3,7 @@ import * as React from "react";
 
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
+import NotFoundScreen from "../screens/NotFoundScreen";
 import { AppParamList } from "../types";
 
 // Each tab has its own navigation stack, you can read more about this pattern here:

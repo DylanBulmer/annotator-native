@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "annotator-native",
-    "slug": "annotator",
+    "name": "Annotator Staging",
+    "slug": "annotator-staging",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -22,6 +22,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.bulmersolutions.annotator",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

@@ -18,7 +18,7 @@ export default {
           },
         },
       },
-      NotFound: '*',
+      // NotFound: '*', // this breaks the signin processes.
     },
   },
 };

@@ -3,8 +3,10 @@ import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { useSession } from "../contexts/SesstionContext";
 
 export default function HomeScreen() {
+  const [session] = useSession();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
@@ -13,7 +15,8 @@ export default function HomeScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/HomeScreen.tsx" />
+      <Text>Hello, {session.user.name}!</Text>
+      <Text>Welcome to Annotator!</Text>
     </View>
   );
 }
