@@ -11,7 +11,6 @@ export default async function exchangeToken(
   request: ReturnType<typeof useAuthRequest>[0],
   response: ReturnType<typeof useAuthRequest>[1]
 ) {
-  console.log("Code Verifier:", request?.codeVerifier);
   setCodeVerifierHeader(request?.codeVerifier);
   // CSRF was inconsistently matching causing intermittent failures, can be ignored
   // https://github.com/nextauthjs/next-auth/issues/569#issuecomment-672968577

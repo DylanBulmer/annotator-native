@@ -2,11 +2,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, Card, Surface, Text } from "react-native-paper";
+import { Avatar, Button, Card, Surface, Text } from "react-native-paper";
 
 import { View } from "../components/Themed";
 import { useSession } from "../contexts/SesstionContext";
 import { AppParamList } from "../types";
+
+const LeftContent = (props: any) => <Avatar.Icon {...props} icon="account-group" />;
 
 export default function HomeScreen({
   navigation,
@@ -36,7 +38,6 @@ export default function HomeScreen({
           lightColor="#eee"
           darkColor="rgba(255,255,255,0.2)"
         />
-        <Text>Choose or create an organization to continue.</Text>
         {
           // @ts-ignore
           orgs.map(org => (
@@ -45,15 +46,17 @@ export default function HomeScreen({
               style={styles.card}
               onPress={() => {
                 navigation.navigate("OrgScreen", {
-                  oid: org._id
+                  oid: org._id,
                 });
               }}
             >
-              <Text style={styles.cardText}>{org.name}</Text>
+              <Card.Title title={org.name} left={LeftContent} />
             </Card>
           ))
         }
         <Button
+          mode="contained"
+          style={{marginVertical: 16}}
           onPress={() => {
             navigation.push("CreateOrgScreen");
           }}

@@ -28,11 +28,9 @@ export default function OrgScreen({
   const { oid } = route.params;
   const [org] = useOrganization({ oid });
 
-  console.log(org)
-
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>Welcome to your Organization</Text>
+      <Text style={styles.title}>Welcome, {org.name}</Text>
       {[1, 2, 3, 4, 5].map(p => (
         <Card style={styles.project} key={`project-${p}`}>
           <Card.Title
