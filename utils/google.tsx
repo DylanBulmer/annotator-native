@@ -98,8 +98,9 @@ export default function GoogleLogIn() {
 
   return (
     <Button
-      icon={loading ? "sync" : undefined}
+      loading={loading}
       disabled={!request || loading}
+      mode="contained"
       onPress={() => {
         promptAsync({ useProxy });
         setLoading(true);

@@ -3,8 +3,10 @@ import * as React from "react";
 
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
+import CreateOrgScreen from "../screens/CreateOrgScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { AppParamList } from "../types";
+import OrgScreen from "../screens/OrgScreen";
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
@@ -21,6 +23,16 @@ export default function AppNavigator() {
       <AppStack.Screen
         name="HomeScreen"
         component={HomeScreen}
+        options={{ headerTitle: "Annotator" }}
+      />
+      <AppStack.Screen
+        name="CreateOrgScreen"
+        component={CreateOrgScreen}
+        options={{ headerTitle: "Annotator" }}
+      />
+      <AppStack.Screen
+        name="OrgScreen"
+        component={OrgScreen}
         options={{ headerTitle: "Annotator" }}
       />
     </AppStack.Navigator>
