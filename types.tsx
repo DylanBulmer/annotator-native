@@ -7,5 +7,7 @@ export type AppParamList = {
   HomeScreen: undefined;
   CreateOrgScreen: undefined;
   OrgScreen: {};
+  ProjectScreen: {};
+  DatasetScreen: {};
   LoginScreen: undefined;
 };

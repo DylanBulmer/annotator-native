@@ -1,16 +1,8 @@
 import { Route } from "@react-navigation/routers";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import {
-  Button,
-  Text,
-  Surface,
-  Card,
-  Title,
-  Paragraph,
-  Avatar,
-} from "react-native-paper";
+import { Text, Surface, Card, Avatar } from "react-native-paper";
 import { useOrganization } from "../contexts/OrganizationContext";
 import { useSession } from "../contexts/SesstionContext";
 import { AppParamList } from "../types";
@@ -28,21 +20,49 @@ export default function OrgScreen({
   const { oid } = route.params;
   const [org] = useOrganization({ oid });
 
+  const [projects, setProjects] = useState<
+    {
+      _id: string;
+      name: string;
+      organizer: {
+        name: string;
+      };
+    }[]
+  >([]);
+
+  useEffect(() => {
+    getProjects(org?._id || oid).then(res => setProjects(res));
+  }, [org?._id]);
+
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>Welcome, {org.name}</Text>
-      {[1, 2, 3, 4, 5].map(p => (
-        <Card style={styles.project} key={`project-${p}`}>
+      <Text style={styles.title}>Welcome, {org?.name}</Text>
+      {projects.map(p => (
+        <Card
+          style={styles.project}
+          key={`project-${p._id}`}
+          onPress={() => {
+            navigation.navigate("ProjectScreen", {
+              project: p,
+            });
+          }}
+        >
           <Card.Title
-            title="Project Name"
-            subtitle="Organizer: Dylan Bulmer"
+            title={p.name}
             left={LeftContent}
+            subtitle={`Organized by: ${p.organizer.name}`}
           />
         </Card>
       ))}
     </Surface>
   );
 }
+
+const getProjects = (oid: string) => {
+  return fetch(`/api/v1/organization/${oid}/project`)
+    .then(res => res.json())
+    .then(res => res.result);
+};
 
 const styles = StyleSheet.create({
   innerContainer: {

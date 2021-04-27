@@ -54,16 +54,21 @@ function useSession() {
 
   // simple check to ensure session has been captured.
   if (!!!state) {
-    getSession().then((sess: SessionToken) => setState(sess));
+    getSession()
+      .then((sess: SessionToken) => setState(sess))
+      .catch(e => console.log(e));
   }
 
   return [state, setState];
 }
 
 const getSession = async () => {
-  const res = await fetch(`/api/auth/session`);
-  const res_1 = await res.json();
-  return res_1.result;
+  return fetch("/api/auth/session")
+    .then(res => res.json())
+    .then(res => res.result)
+    .catch(e => {
+      throw e;
+    });
 };
 
 export { SessionProvider, useSession };

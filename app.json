@@ -32,7 +32,7 @@
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "description": "Annotator Native now has cloud integration to the Annotator backend servers.\n\n## Changelog:\n\n### Tue, April 20, 2021\n* Implement dark theme\n* Implement \"create organization\" functionality\n* Create organization project screen",
+    "description": "Sign in and annotate on the go with Annotator Native and its cloud integration to the Annotator backend servers.",
     "githubUrl": "https://github.com/DylanBulmer/annotator-native"
   }
 }

@@ -25,19 +25,7 @@ export default function HomeScreen({
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Surface style={styles.innerContainer}>
-        <Text style={styles.title}>Home</Text>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.2)"
-        />
-        <Text>Hello, {session.user.name}!</Text>
-        <Text>Welcome to PERC_Lab's Annotator tool!</Text>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.2)"
-        />
+        <Text style={styles.title}>Your Organizations</Text>
         {
           // @ts-ignore
           orgs.map(org => (
@@ -88,11 +76,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
   card: {
     width: "90%",
