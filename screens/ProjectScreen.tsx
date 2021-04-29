@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { Text, Surface, Card, Avatar } from "react-native-paper";
 import { useOrganization } from "../contexts/OrganizationContext";
 import { useSession } from "../contexts/SessionContext";
-import { AppParamList } from "../types";
+import { AppParamList, Project } from "../types";
 
 const LeftContent = (props: any) => <Avatar.Icon {...props} icon="database" />;
 
@@ -13,31 +13,7 @@ export default function ProjectScreen({
   route,
   navigation,
 }: {
-  route: Route<
-    string,
-    {
-      project: {
-        _id: string;
-        createdAt: string;
-        name: string;
-        datasets: [
-          {
-            _id: string;
-            name: string;
-            label: string;
-            user: string | string[];
-          }
-        ];
-        organization: string;
-        organizer: {
-          _id: string;
-          email: string;
-          name: string;
-        };
-        updatedAt: string;
-      };
-    }
-  >;
+  route: Route<string, {project: Project}>;
   navigation: StackNavigationProp<AppParamList, "Projects">;
 }) {
   const [session] = useSession();
@@ -61,6 +37,7 @@ export default function ProjectScreen({
             key={`dataset-${d._id}`}
             onPress={() =>
               navigation.navigate("Datasets", {
+                name: d.name,
                 project,
                 dataset: d,
               })

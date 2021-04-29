@@ -53,7 +53,7 @@ export default function HomeScreen({
           mode="contained"
           style={{ marginVertical: 16 }}
           onPress={() => {
-            navigation.push("Create Organization");
+            navigation.navigate("CreateOrganization");
           }}
         >
           Create an organization

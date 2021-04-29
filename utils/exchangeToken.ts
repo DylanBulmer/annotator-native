@@ -5,7 +5,7 @@ import { useAuthRequest } from "expo-auth-session";
 import qs from "qs";
 import { DeviceEventEmitter } from "react-native";
 import * as Sentry from "sentry-expo";
-import BackendService from "./backendService";
+import { AuthService } from "./services";
 
 export default async function exchangeToken(
   providerId: string,
@@ -23,11 +23,12 @@ export default async function exchangeToken(
   // const params = { ...(response as any).params, state };
   const params = { ...(response as any).params };
 
-  return await BackendService.getCallback({
+  return await AuthService.getCallback({
     codeVerifier: request?.codeVerifier,
     params: qs.stringify(params),
-    providerId
-  }).then(response => {
+    providerId,
+  })
+    .then(response => {
       if (response.config.url?.includes("/error")) {
         throw new Error(`Authentication Failed: ${response.config.url}`);
       }

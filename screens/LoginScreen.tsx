@@ -1,8 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Surface, Text } from "react-native-paper";
-import { View } from "../components/Themed";
+import { Divider, Surface, Text, Title } from "react-native-paper";
 
 import { RootStackParamList } from "../types";
 import GoogleLogIn from "../utils/google";
@@ -14,13 +13,11 @@ export default function LoginScreen({
 }) {
   return (
     <Surface style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
+      <Title>Annotator GO</Title>
+      <Text style={styles.text} >Welcome to PERC_Lab's open-sourced annotator tool!</Text>
+      <Divider style={styles.separator} />
       <GoogleLogIn />
+      <Divider style={styles.separator} />
     </Surface>
   );
 }
@@ -29,15 +26,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    padding: 32,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  text: {
+    textAlign: "center",
+    marginTop: 30,
+    marginBottom: 60,
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: "80%",
+    width: "100%",
   },
 });

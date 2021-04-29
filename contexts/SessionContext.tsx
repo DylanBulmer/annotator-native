@@ -1,5 +1,5 @@
 import React from "react";
-import BackendService from "../utils/backendService";
+import { AuthService } from "../utils/services";
 import { isEqual } from "lodash";
 
 export interface SessionToken {
@@ -61,15 +61,14 @@ function useSession() {
       .catch(e => console.log(e));
   }
 
-  return [state, setState, !isEqual(state, {}) ];
+  return [state, setState, !isEqual(state, {})];
 }
 
 const getSession = async () => {
-  return BackendService.getSession()
-    .then(res => JSON.parse(res.data))
+  return AuthService.getSession()
     .then(res => {
-      console.log(res)
-      return res.result
+      if (res.data) return JSON.parse(res.data).result;
+      else return {};
     })
     .catch(e => {
       throw e;

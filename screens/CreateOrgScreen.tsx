@@ -1,16 +1,14 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, Text, TextInput, Surface } from "react-native-paper";
-import { useSession } from "../contexts/SessionContext";
 import { AppParamList } from "../types";
 
 export default function CreateOrgScreen({
   navigation,
 }: {
-  navigation: StackNavigationProp<AppParamList, "Create Organization">;
+  navigation: DrawerNavigationProp<AppParamList, "CreateOrganization">;
 }) {
-  const [session] = useSession();
   const [text, setText] = React.useState("");
 
   return (
@@ -28,7 +26,8 @@ export default function CreateOrgScreen({
         style={{ width: 100, alignSelf: "flex-end" }}
         onPress={() => {
           postOrganization(text).then(() => {
-            navigation.pop();
+            setText("");
+            navigation.navigate("Home");
           });
         }}
       >

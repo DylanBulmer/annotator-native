@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 
 const URL = "http://annotator.test.bulmersolutions.com:8080";
 
-const BackendService = {
+export const AuthService = {
   getSession: () =>
     axios.get(`${URL}/api/auth/session`, {
       headers: {
@@ -31,13 +31,16 @@ const BackendService = {
         }
       | undefined
   ) => {
+    // Generate POST body.
     const body = props?.csrfToken
       ? {
           csrfToken: props.csrfToken,
         }
       : {};
 
-    return new Promise<void>((resolve, reject) =>
+    // Return a void promise.
+    return new Promise<void>((resolve, reject) => {
+      // Start axios POST request.
       axios
         .post(`${URL}/api/auth/signout`, body, {
           headers: {
@@ -46,21 +49,24 @@ const BackendService = {
           },
         })
         .then(res => {
+          // If token is provided, resolve promise.
           if (props?.csrfToken) resolve();
+          // Else, scrape the response page for the token.
           else {
+            // Preform regex and store the value of token
             const csrfToken = /csrfToken.*?value="(?<value>.*?)"/gm.exec(
               res.data
             )?.groups?.value;
+            // if token exists, call logout again, but send token
             if (csrfToken)
-              BackendService.logout({ csrfToken })
+              AuthService.logout({ csrfToken })
                 .then(() => resolve())
                 .catch(() => reject());
+            // else reject.
             else reject();
           }
         })
-        .catch(() => reject())
-    );
+        .catch(() => reject());
+    });
   },
 };
-
-export default BackendService;

@@ -14,7 +14,7 @@ export const DarkTheme = {
     colors: {
       ...PaperDarkTheme.colors,
       background: "#121212",
-      primary: "#3498db",
+      primary: "#11AAFF",
       accent: "#f1c40f",
     },
     dark: true,
@@ -30,7 +30,7 @@ export const LightTheme = {
     roundness: 2,
     colors: {
       ...PaperLightTheme.colors,
-      primary: "#3498db",
+      primary: "#11AAFF",
       accent: "#f1c40f",
     },
   },

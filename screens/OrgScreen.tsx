@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { Text, Surface, Card, Avatar } from "react-native-paper";
 import { useOrganization } from "../contexts/OrganizationContext";
 import { useSession } from "../contexts/SessionContext";
-import { AppParamList } from "../types";
+import { AppParamList, Project } from "../types";
 
 const LeftContent = (props: any) => <Avatar.Icon {...props} icon="folder" />;
 
@@ -20,24 +20,22 @@ export default function OrgScreen({
   const { oid } = route.params;
   const [org] = useOrganization({ oid });
 
-  const [projects, setProjects] = useState<
-    {
-      _id: string;
-      name: string;
-      organizer: {
-        name: string;
-      };
-    }[]
-  >([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    getProjects(org?._id || oid).then(res => setProjects(res));
+    getProjects(org?._id || oid).then((res: Project[]) => {
+      const mProjects = res.filter(
+        p =>
+          p.datasets.filter(d => d.user.includes(session.user.email)).length > 0
+      );
+      setProjects(mProjects);
+    });
   }, [org?._id]);
 
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>Welcome, {org?.name}</Text>
-      {projects.map(p => (
+      <Text style={styles.title}>Your Projects:</Text>
+      {projects.length ? projects.map(p => (
         <Card
           style={styles.project}
           key={`project-${p._id}`}
@@ -54,7 +52,7 @@ export default function OrgScreen({
             subtitle={`Organized by: ${p.organizer.name}`}
           />
         </Card>
-      ))}
+      )): <Text>No projects found.</Text>}
     </Surface>
   );
 }

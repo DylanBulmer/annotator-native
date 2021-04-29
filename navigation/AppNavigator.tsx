@@ -1,7 +1,4 @@
-import {
-  createStackNavigator,
-  StackNavigationProp,
-} from "@react-navigation/stack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -12,16 +9,14 @@ import {
 import * as React from "react";
 
 import HomeScreen from "../screens/HomeScreen";
-import LoginScreen from "../screens/LoginScreen";
 import CreateOrgScreen from "../screens/CreateOrgScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import { AppParamList, RootStackParamList } from "../types";
 import OrgScreen from "../screens/OrgScreen";
 import ProjectScreen from "../screens/ProjectScreen";
 import DatasetScreen from "../screens/DatasetScreen";
 import { Avatar, Divider, Text } from "react-native-paper";
 import { useSession } from "../contexts/SessionContext";
-import BackendService from "../utils/backendService";
+import { AuthService } from "../utils/services";
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
@@ -35,7 +30,7 @@ interface DrawerProps extends DrawerContentComponentProps {
 
 function CustomDrawerContent(props: DrawerProps) {
   const { navigation, rootNavigation } = props;
-  const [session, setSession] = useSession();
+  const [, setSession] = useSession();
 
   return (
     <DrawerContentScrollView {...props}>
@@ -55,16 +50,13 @@ function CustomDrawerContent(props: DrawerProps) {
           <Avatar.Icon color={color} size={size} icon={"logout"} />
         )}
         onPress={() => {
-          BackendService.logout(undefined)
-            .then(() => {
-              setSession(null);
-            })
-            .finally(() => {
-              rootNavigation.reset({
-                index: 1,
-                routes: [{ name: "Login" }],
-              });
+          AuthService.logout(undefined).then(() => {
+            setSession(null);
+            rootNavigation.reset({
+              index: 1,
+              routes: [{ name: "Login" }],
             });
+          });
         }}
       />
     </DrawerContentScrollView>
@@ -81,6 +73,10 @@ export default function AppNavigator({
       drawerContent={props => (
         <CustomDrawerContent {...props} rootNavigation={navigation} />
       )}
+      screenOptions={({ route }) => ({
+        headerShown: true,
+        headerTitle: route?.params?.name,
+      })}
     >
       <AppDrawer.Screen
         name="Home"
@@ -88,44 +84,22 @@ export default function AppNavigator({
         options={{ headerTitle: "Annotator" }}
       />
       <AppDrawer.Screen
-        name="Create Organization"
+        name="CreateOrganization"
         component={CreateOrgScreen}
         options={{ headerTitle: "Annotator" }}
       />
       <AppDrawer.Screen
         name="Organization"
         component={OrgScreen}
-        options={{ headerTitle: "Organization" }}
       />
       <AppDrawer.Screen
         name="Projects"
         component={ProjectScreen}
-        options={{ headerTitle: "Project" }}
       />
       <AppDrawer.Screen
         name="Datasets"
         component={DatasetScreen}
-        options={{ headerTitle: "Dataset" }}
       />
     </AppDrawer.Navigator>
   );
 }
-
-// export default function RootNavigator() {
-//   return (
-//     <AppStack.Navigator>
-//       <AppStack.Screen
-//         name="Login"
-//         component={LoginScreen}
-//         options={{ headerTitle: "Login to Annotator" }}
-//       />
-//       <AppStack.Screen
-//         name="App"
-//         component={AppNavigator}
-//         options={({ route }) => ({
-//           title: route.params?.name ? route.params.name : "Annotator",
-//         })}
-//       />
-//     </AppStack.Navigator>
-//   );
-// }

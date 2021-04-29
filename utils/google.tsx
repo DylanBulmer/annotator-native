@@ -7,7 +7,7 @@ import {
 } from "expo-auth-session";
 // import {useAuthRequest} from "expo-auth-session/providers/google"
 import Constants from "expo-constants";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import exchangeToken from "./exchangeToken";
 import { useSession, SessionToken } from "../contexts/SessionContext";
 import * as WebBrowser from "expo-web-browser";
@@ -25,7 +25,7 @@ function reverseDomain(domain: string) {
 export default function GoogleLogIn() {
   // Linking.makeUrl("https://auth.expo.io/@dylanbulmer/annotator")
   const [session, setSession] = useSession();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigation = useNavigation();
 
   const clientId =

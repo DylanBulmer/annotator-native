@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text, Surface, DataTable, Button } from "react-native-paper";
 import { useSession } from "../contexts/SessionContext";
-import { AppParamList } from "../types";
+import { AppParamList, Dataset, Project } from "../types";
 
 export default function DatasetScreen({
   route,
@@ -14,24 +14,9 @@ export default function DatasetScreen({
   route: Route<
     string,
     {
-      project: {
-        _id: string;
-        createdAt: string;
-        name: string;
-        organization: string;
-        organizer: {
-          _id: string;
-          email: string;
-          name: string;
-        };
-        updatedAt: string;
-      };
-      dataset: {
-        _id: string;
-        name: string;
-        label: string;
-        user: string | string[];
-      };
+      name: string;
+      project: Project;
+      dataset: Dataset;
     }
   >;
   navigation: StackNavigationProp<AppParamList, "Datasets">;
