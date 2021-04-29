@@ -5,48 +5,55 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Avatar, Button, Card, Surface, Text } from "react-native-paper";
 
 import { View } from "../components/Themed";
-import { useSession } from "../contexts/SesstionContext";
+import { useSession } from "../contexts/SessionContext";
 import { AppParamList } from "../types";
 
-const LeftContent = (props: any) => <Avatar.Icon {...props} icon="account-group" />;
+const LeftContent = (props: any) => (
+  <Avatar.Icon {...props} icon="account-group" />
+);
 
 export default function HomeScreen({
   navigation,
 }: {
-  navigation: StackNavigationProp<AppParamList, "LoginScreen">;
+  navigation: StackNavigationProp<AppParamList, "Home">;
 }) {
   const [session] = useSession();
   const [orgs, setOrgs] = useState<{ _id: string; name: string }[]>([]);
 
   useEffect(() => {
-    getOrganizations().then(res => setOrgs(res));
+    if (session) getOrganizations().then(res => setOrgs(res));
+    else {
+      navigation.dangerouslyGetParent()?.navigate("Login");
+    }
   });
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Surface style={styles.innerContainer}>
         <Text style={styles.title}>Your Organizations</Text>
-        {
-          // @ts-ignore
+        {typeof orgs === "object" && orgs.length ? (
           orgs.map(org => (
             <Card
               key={org._id}
               style={styles.card}
               onPress={() => {
-                navigation.navigate("OrgScreen", {
+                navigation.navigate("Organization", {
                   oid: org._id,
+                  name: org.name,
                 });
               }}
             >
               <Card.Title title={org.name} left={LeftContent} />
             </Card>
           ))
-        }
+        ) : (
+          <Text>You're not a part of any groups!</Text>
+        )}
         <Button
           mode="contained"
-          style={{marginVertical: 16}}
+          style={{ marginVertical: 16 }}
           onPress={() => {
-            navigation.push("CreateOrgScreen");
+            navigation.push("Create Organization");
           }}
         >
           Create an organization

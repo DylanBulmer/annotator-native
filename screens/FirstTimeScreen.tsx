@@ -3,13 +3,13 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, Text, TextInput, Surface } from "react-native-paper";
 import { View } from "../components/Themed";
-import { useSession } from "../contexts/SesstionContext";
+import { useSession } from "../contexts/SessionContext";
 import { AppParamList } from "../types";
 
 export default function CreateOrgScreen({
   navigation,
 }: {
-  navigation: StackNavigationProp<AppParamList, "CreateOrgScreen">;
+  navigation: StackNavigationProp<AppParamList, "Create Organization">;
 }) {
   const [session] = useSession();
   const [text, setText] = React.useState("");

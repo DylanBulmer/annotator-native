@@ -1,18 +1,19 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import { Surface, Text } from "react-native-paper";
+import { View } from "../components/Themed";
 
-import { Text, View } from "../components/Themed";
-import { AppParamList } from "../types";
+import { RootStackParamList } from "../types";
 import GoogleLogIn from "../utils/google";
 
 export default function LoginScreen({
   navigation,
 }: {
-  navigation: StackNavigationProp<AppParamList, "LoginScreen">;
+  navigation: StackNavigationProp<RootStackParamList, "Login">;
 }) {
   return (
-    <View style={styles.container}>
+    <Surface style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <View
         style={styles.separator}
@@ -20,7 +21,7 @@ export default function LoginScreen({
         darkColor="rgba(255,255,255,0.1)"
       />
       <GoogleLogIn />
-    </View>
+    </Surface>
   );
 }
 

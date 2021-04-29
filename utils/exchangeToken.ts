@@ -5,13 +5,14 @@ import { useAuthRequest } from "expo-auth-session";
 import qs from "qs";
 import { DeviceEventEmitter } from "react-native";
 import * as Sentry from "sentry-expo";
+import BackendService from "./backendService";
 
 export default async function exchangeToken(
   providerId: string,
   request: ReturnType<typeof useAuthRequest>[0],
   response: ReturnType<typeof useAuthRequest>[1]
 ) {
-  setCodeVerifierHeader(request?.codeVerifier);
+  // setCodeVerifierHeader(request?.codeVerifier);
   // CSRF was inconsistently matching causing intermittent failures, can be ignored
   // https://github.com/nextauthjs/next-auth/issues/569#issuecomment-672968577
   // const csrf = await getCsrfToken();
@@ -22,10 +23,13 @@ export default async function exchangeToken(
   // const params = { ...(response as any).params, state };
   const params = { ...(response as any).params };
 
-  return await fetch(`/api/auth/callback/${providerId}?${qs.stringify(params)}`)
-    .then(response => {
-      if (response.url.includes("/error")) {
-        throw new Error(`Authentication Failed: ${response.url}`);
+  return await BackendService.getCallback({
+    codeVerifier: request?.codeVerifier,
+    params: qs.stringify(params),
+    providerId
+  }).then(response => {
+      if (response.config.url?.includes("/error")) {
+        throw new Error(`Authentication Failed: ${response.config.url}`);
       }
     })
     .catch(e => {
@@ -45,7 +49,7 @@ export default async function exchangeToken(
       }
     })
     .finally(() => {
-      setCodeVerifierHeader(undefined);
+      // setCodeVerifierHeader(undefined);
       DeviceEventEmitter.emit("focus");
     });
 }

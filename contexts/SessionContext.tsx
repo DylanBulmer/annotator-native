@@ -1,4 +1,6 @@
 import React from "react";
+import BackendService from "../utils/backendService";
+import { isEqual } from "lodash";
 
 export interface SessionToken {
   user?: {
@@ -59,13 +61,16 @@ function useSession() {
       .catch(e => console.log(e));
   }
 
-  return [state, setState];
+  return [state, setState, !isEqual(state, {}) ];
 }
 
 const getSession = async () => {
-  return fetch("/api/auth/session")
-    .then(res => res.json())
-    .then(res => res.result)
+  return BackendService.getSession()
+    .then(res => JSON.parse(res.data))
+    .then(res => {
+      console.log(res)
+      return res.result
+    })
     .catch(e => {
       throw e;
     });

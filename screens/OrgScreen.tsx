@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Text, Surface, Card, Avatar } from "react-native-paper";
 import { useOrganization } from "../contexts/OrganizationContext";
-import { useSession } from "../contexts/SesstionContext";
+import { useSession } from "../contexts/SessionContext";
 import { AppParamList } from "../types";
 
 const LeftContent = (props: any) => <Avatar.Icon {...props} icon="folder" />;
@@ -14,7 +14,7 @@ export default function OrgScreen({
   navigation,
 }: {
   route: Route<string, { oid: string }>;
-  navigation: StackNavigationProp<AppParamList, "OrgScreen">;
+  navigation: StackNavigationProp<AppParamList, "Organization">;
 }) {
   const [session] = useSession();
   const { oid } = route.params;
@@ -42,8 +42,9 @@ export default function OrgScreen({
           style={styles.project}
           key={`project-${p._id}`}
           onPress={() => {
-            navigation.navigate("ProjectScreen", {
+            navigation.navigate("Projects", {
               project: p,
+              name: p.name,
             });
           }}
         >

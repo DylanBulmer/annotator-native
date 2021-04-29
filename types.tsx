@@ -1,13 +1,18 @@
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
+  Login: undefined;
+  App: {
+    name: string | undefined;
+  } | undefined;
 };
 
+
+
 export type AppParamList = {
-  HomeScreen: undefined;
-  CreateOrgScreen: undefined;
-  OrgScreen: {};
-  ProjectScreen: {};
-  DatasetScreen: {};
-  LoginScreen: undefined;
+  Home: undefined;
+  "Create Organization": undefined;
+  Organization: {};
+  Projects: {};
+  Datasets: {};
 };

@@ -8,20 +8,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import { SessionProvider } from "./contexts/SesstionContext";
-import { DarkTheme, Provider as PaperProvider } from "react-native-paper";
+import { SessionProvider } from "./contexts/SessionContext";
+import { Provider as PaperProvider } from "react-native-paper";
 import { OrganizationProvider } from "./contexts/OrganizationContext";
-
-const theme = {
-  ...DarkTheme,
-  roundness: 2,
-  colors: {
-    ...DarkTheme.colors,
-    // background: '#121212',
-    primary: "#3498db",
-    accent: "#f1c40f",
-  },
-};
+import { DarkTheme, LightTheme } from "./utils/theme";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -33,7 +23,13 @@ export default function App() {
     return (
       <SessionProvider>
         <OrganizationProvider>
-          <PaperProvider theme={theme}>
+          <PaperProvider
+            theme={
+              colorScheme === "light"
+                ? LightTheme.paper
+                : DarkTheme.paper
+            }
+          >
             <SafeAreaProvider>
               <Navigation colorScheme={colorScheme} />
               <StatusBar />

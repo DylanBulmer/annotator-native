@@ -9,7 +9,7 @@ import {
 import Constants from "expo-constants";
 import React, { useEffect, useState } from "react";
 import exchangeToken from "./exchangeToken";
-import { useSession, SessionToken } from "../contexts/SesstionContext";
+import { useSession, SessionToken } from "../contexts/SessionContext";
 import * as WebBrowser from "expo-web-browser";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
@@ -78,7 +78,13 @@ export default function GoogleLogIn() {
               const expires = new Date(res.expires);
               const now = new Date();
 
-              expires > now && setSession(res);
+              if (expires > now) {
+                setSession(res)
+                navigation.reset({
+                  index: 1,
+                  routes: [{ name: "App" }],
+                });
+              }
             }
           });
       });
@@ -86,15 +92,6 @@ export default function GoogleLogIn() {
       setLoading(false);
     }
   }, [response]);
-
-  useEffect(() => {
-    if (session?.user) {
-      navigation.reset({
-        index: 1,
-        routes: [{ name: "HomeScreen" }],
-      });
-    }
-  }, [session]);
 
   return (
     <Button
