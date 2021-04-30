@@ -24,8 +24,9 @@
     },
     "android": {
       "package": "com.bulmersolutions.annotator",
+      "versionCode": 2,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": []

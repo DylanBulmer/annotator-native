@@ -3,15 +3,21 @@ import { Platform } from "react-native";
 import Constants from "expo-constants";
 
 const URL = "http://annotator.test.bulmersolutions.com:8080";
+const HEADERS = {
+  "annotator-ownership": String(Constants.appOwnership),
+  "annotator-platform": Platform.OS,
+};
 
 export const AuthService = {
   getSession: () =>
-    axios.get(`${URL}/api/auth/session`, {
-      headers: {
-        "annotator-ownership": String(Constants.appOwnership),
-        "annotator-platform": Platform.OS,
-      },
-    }),
+    axios
+      .get(`${URL}/api/auth/session`, {
+        headers: HEADERS,
+      })
+      .then(res => {
+        if (res.data) return res.data;
+        else return {};
+      }),
   getCallback: (props: {
     codeVerifier: string | undefined;
     providerId: string;
@@ -19,8 +25,7 @@ export const AuthService = {
   }) =>
     axios.get(`${URL}/api/auth/callback/${props.providerId}?${props.params}`, {
       headers: {
-        "annotator-ownership": String(Constants.appOwnership),
-        "annotator-platform": Platform.OS,
+        ...HEADERS,
         "annotator-verifier": props.codeVerifier,
       },
     }),
@@ -43,10 +48,7 @@ export const AuthService = {
       // Start axios POST request.
       axios
         .post(`${URL}/api/auth/signout`, body, {
-          headers: {
-            "annotator-ownership": String(Constants.appOwnership),
-            "annotator-platform": Platform.OS,
-          },
+          headers: HEADERS,
         })
         .then(res => {
           // If token is provided, resolve promise.
@@ -68,5 +70,18 @@ export const AuthService = {
         })
         .catch(() => reject());
     });
+  },
+};
+
+export const AppService = {
+  getOrganizations: () => {
+    return axios
+      .get(`${URL}/api/v1/organization`, { headers: HEADERS })
+      .then(res => res.data.result);
+  },
+  getOrganization: (oid: string) => {
+    return axios
+      .get(`/api/v1/organization/${oid}`)
+      .then(res => res.data.result);
   },
 };

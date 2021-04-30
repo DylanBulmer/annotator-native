@@ -1,4 +1,5 @@
 import React from "react";
+import { AppService } from "../utils/services";
 
 export interface Organization {
   name?: string;
@@ -48,16 +49,10 @@ function useOrganization({ oid }: {oid: string}) {
 
   // simple check to ensure Organization data is available (if oid is given).
   if (oid && (state === null || state?._id !== oid)) {
-    getOrganization(oid).then((org) => setState(org));
+    AppService.getOrganization(oid).then((org) => setState(org));
   }
 
   return [state, setState];
 }
-
-const getOrganization = (oid: string) => {
-  return fetch(`/api/v1/organization/${oid}`)
-    .then((res) => res.json())
-    .then((res) => res.result);
-};
 
 export { OrganizationProvider, useOrganization };

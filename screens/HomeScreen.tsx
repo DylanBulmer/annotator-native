@@ -4,9 +4,9 @@ import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Avatar, Button, Card, Surface, Text } from "react-native-paper";
 
-import { View } from "../components/Themed";
 import { useSession } from "../contexts/SessionContext";
 import { AppParamList } from "../types";
+import { AppService } from "../utils/services";
 
 const LeftContent = (props: any) => (
   <Avatar.Icon {...props} icon="account-group" />
@@ -17,14 +17,11 @@ export default function HomeScreen({
 }: {
   navigation: StackNavigationProp<AppParamList, "Home">;
 }) {
-  const [session] = useSession();
+  const {isLoggedIn} = useSession();
   const [orgs, setOrgs] = useState<{ _id: string; name: string }[]>([]);
 
   useEffect(() => {
-    if (session) getOrganizations().then(res => setOrgs(res));
-    else {
-      navigation.dangerouslyGetParent()?.navigate("Login");
-    }
+    if (isLoggedIn) AppService.getOrganizations().then(res => setOrgs(res));
   });
 
   return (
@@ -62,12 +59,6 @@ export default function HomeScreen({
     </ScrollView>
   );
 }
-
-const getOrganizations = () => {
-  return fetch("/api/v1/organization")
-    .then(res => res.json())
-    .then(res => res.result);
-};
 
 const styles = StyleSheet.create({
   container: {

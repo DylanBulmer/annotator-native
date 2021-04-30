@@ -16,7 +16,7 @@ export default function OrgScreen({
   route: Route<string, { oid: string }>;
   navigation: StackNavigationProp<AppParamList, "Organization">;
 }) {
-  const [session] = useSession();
+  const { session } = useSession();
   const { oid } = route.params;
   const [org] = useOrganization({ oid });
 
@@ -26,7 +26,7 @@ export default function OrgScreen({
     getProjects(org?._id || oid).then((res: Project[]) => {
       const mProjects = res.filter(
         p =>
-          p.datasets.filter(d => d.user.includes(session.user.email)).length > 0
+          p.datasets.filter(d => session?.user ? d.user.includes(session.user.email) : false).length > 0
       );
       setProjects(mProjects);
     });
@@ -35,24 +35,28 @@ export default function OrgScreen({
   return (
     <Surface style={styles.innerContainer}>
       <Text style={styles.title}>Your Projects:</Text>
-      {projects.length ? projects.map(p => (
-        <Card
-          style={styles.project}
-          key={`project-${p._id}`}
-          onPress={() => {
-            navigation.navigate("Projects", {
-              project: p,
-              name: p.name,
-            });
-          }}
-        >
-          <Card.Title
-            title={p.name}
-            left={LeftContent}
-            subtitle={`Organized by: ${p.organizer.name}`}
-          />
-        </Card>
-      )): <Text>No projects found.</Text>}
+      {projects.length ? (
+        projects.map(p => (
+          <Card
+            style={styles.project}
+            key={`project-${p._id}`}
+            onPress={() => {
+              navigation.navigate("Projects", {
+                project: p,
+                name: p.name,
+              });
+            }}
+          >
+            <Card.Title
+              title={p.name}
+              left={LeftContent}
+              subtitle={`Organized by: ${p.organizer.name}`}
+            />
+          </Card>
+        ))
+      ) : (
+        <Text>No projects found.</Text>
+      )}
     </Surface>
   );
 }

@@ -7,12 +7,13 @@ import {
 } from "expo-auth-session";
 // import {useAuthRequest} from "expo-auth-session/providers/google"
 import Constants from "expo-constants";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import exchangeToken from "./exchangeToken";
-import { useSession, SessionToken } from "../contexts/SessionContext";
+import { useSession, ISessionToken } from "../contexts/SessionContext";
 import * as WebBrowser from "expo-web-browser";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
+import { AuthService } from "./services";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,7 +25,7 @@ function reverseDomain(domain: string) {
 
 export default function GoogleLogIn() {
   // Linking.makeUrl("https://auth.expo.io/@dylanbulmer/annotator")
-  const [session, setSession] = useSession();
+  const {session, setSession, isLoggedIn} = useSession();
   const [loading, setLoading] = useState<boolean>(true);
   const navigation = useNavigation();
 
@@ -67,26 +68,24 @@ export default function GoogleLogIn() {
     discovery
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (response?.type === "success") {
       exchangeToken("google", request, response).then(async () => {
-        await fetch(`/api/auth/session`)
-          .then(res => res.json())
-          .then((res: SessionToken) => {
-            setLoading(false);
-            if (res?.expires) {
-              const expires = new Date(res.expires);
-              const now = new Date();
+        await AuthService.getSession().then((res: ISessionToken) => {
+          setLoading(false);
+          if (res?.expires) {
+            const expires = new Date(res.expires);
+            const now = new Date();
 
-              if (expires > now) {
-                setSession(res)
-                navigation.reset({
-                  index: 1,
-                  routes: [{ name: "App" }],
-                });
-              }
+            if (expires > now) {
+              setSession(res);
+              navigation.reset({
+                index: 1,
+                routes: [{ name: "App" }],
+              });
             }
-          });
+          }
+        });
       });
     } else {
       setLoading(false);

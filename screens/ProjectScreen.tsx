@@ -3,7 +3,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Text, Surface, Card, Avatar } from "react-native-paper";
-import { useOrganization } from "../contexts/OrganizationContext";
 import { useSession } from "../contexts/SessionContext";
 import { AppParamList, Project } from "../types";
 
@@ -13,10 +12,10 @@ export default function ProjectScreen({
   route,
   navigation,
 }: {
-  route: Route<string, {project: Project}>;
+  route: Route<string, { project: Project }>;
   navigation: StackNavigationProp<AppParamList, "Projects">;
 }) {
-  const [session] = useSession();
+  const { session } = useSession();
   const { project } = route.params;
 
   const availableDatasets: {
@@ -24,11 +23,11 @@ export default function ProjectScreen({
     name: string;
     label: string;
     user: string | string[];
-  }[] = project?.datasets.filter(d => d.user.includes(session?.user?.email));
+  }[] = project?.datasets.filter(d => session?.user ? d.user.includes(session.user.email) : false);
 
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>{project?.name}</Text>
+      <Text style={styles.title}>Your Datasets:</Text>
       {availableDatasets.length ? (
         availableDatasets.map(d => (
           // only allow datasets assigned to current user.

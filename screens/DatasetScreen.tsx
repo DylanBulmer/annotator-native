@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text, Surface, DataTable, Button } from "react-native-paper";
-import { useSession } from "../contexts/SessionContext";
 import { AppParamList, Dataset, Project } from "../types";
 
 export default function DatasetScreen({
@@ -21,7 +20,6 @@ export default function DatasetScreen({
   >;
   navigation: StackNavigationProp<AppParamList, "Datasets">;
 }) {
-  const [session] = useSession();
   const { project, dataset } = route.params;
 
   const [annotations, setAnnotations] = useState<
@@ -64,13 +62,13 @@ export default function DatasetScreen({
             {annotations.map(a => {
               return (
                 <DataTable.Row key={`annotation-${a._id}`}>
-                  <DataTable.Cell style={{ maxWidth: 100, paddingRight: 16 }}>
+                  <DataTable.Cell style={{ flex: 1, maxWidth: 125, paddingRight: 8 }}>
                     <Text ellipsizeMode="tail" numberOfLines={1}>
                       {a.dataId}
                     </Text>
                   </DataTable.Cell>
-                  <DataTable.Cell numeric>{a.type}</DataTable.Cell>
-                  <DataTable.Cell numeric style={{ flex: 1, flexGrow: 1, justifyContent: 'flex-end' }}>
+                  <DataTable.Cell numeric style={{ flex: 1, justifyContent: 'flex-end' }}>{a.type}</DataTable.Cell>
+                  <DataTable.Cell numeric style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <Button>Annotate</Button>
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -112,8 +110,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     flexGrow: 1,
-    paddingVertical: 32,
-    paddingHorizontal: 16,
   },
   title: {
     fontSize: 20,

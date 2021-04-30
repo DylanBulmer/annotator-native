@@ -14,7 +14,7 @@ import { AppParamList, RootStackParamList } from "../types";
 import OrgScreen from "../screens/OrgScreen";
 import ProjectScreen from "../screens/ProjectScreen";
 import DatasetScreen from "../screens/DatasetScreen";
-import { Avatar, Divider, Text } from "react-native-paper";
+import { Avatar, Divider, Text, Title } from "react-native-paper";
 import { useSession } from "../contexts/SessionContext";
 import { AuthService } from "../utils/services";
 
@@ -30,12 +30,19 @@ interface DrawerProps extends DrawerContentComponentProps {
 
 function CustomDrawerContent(props: DrawerProps) {
   const { navigation, rootNavigation } = props;
-  const [, setSession] = useSession();
+  const { session, setSession, isLoggedIn } = useSession();
+
+  // React.useEffect(() => {
+  //   if (!isLoggedIn) {
+  //   }
+  // }, [session]);
 
   return (
     <DrawerContentScrollView {...props}>
       {/* <DrawerItemList {...props} /> */}
-
+      <Title style={{ alignSelf: "center", paddingVertical: 16 }}>
+        Annotator GO!
+      </Title>
       <DrawerItem
         label={({ color }) => <Text style={{ color }}>Home</Text>}
         icon={({ color, size }) => (
@@ -51,7 +58,8 @@ function CustomDrawerContent(props: DrawerProps) {
         )}
         onPress={() => {
           AuthService.logout(undefined).then(() => {
-            setSession(null);
+            setSession({});
+
             rootNavigation.reset({
               index: 1,
               routes: [{ name: "Login" }],
@@ -88,18 +96,9 @@ export default function AppNavigator({
         component={CreateOrgScreen}
         options={{ headerTitle: "Annotator" }}
       />
-      <AppDrawer.Screen
-        name="Organization"
-        component={OrgScreen}
-      />
-      <AppDrawer.Screen
-        name="Projects"
-        component={ProjectScreen}
-      />
-      <AppDrawer.Screen
-        name="Datasets"
-        component={DatasetScreen}
-      />
+      <AppDrawer.Screen name="Organization" component={OrgScreen} />
+      <AppDrawer.Screen name="Projects" component={ProjectScreen} />
+      <AppDrawer.Screen name="Datasets" component={DatasetScreen} />
     </AppDrawer.Navigator>
   );
 }

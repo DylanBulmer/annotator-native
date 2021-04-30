@@ -2,7 +2,7 @@ import React from "react";
 import { AuthService } from "../utils/services";
 import { isEqual } from "lodash";
 
-export interface SessionToken {
+export interface ISessionToken {
   user?: {
     name: string;
     email: string;
@@ -12,67 +12,32 @@ export interface SessionToken {
   expires?: string;
 }
 
-const SessionContext = React.createContext<SessionToken | undefined>(undefined);
-
-function SessionReducer(
-  state: SessionToken | undefined,
-  payload: SessionToken | undefined
-) {
-  // switch (payload.type) {
-  //   case 'set': {
-  //     return {Organization: payload.data}
-  //   }
-  //   default: {
-  //     throw new Error(`Unhandled action type: ${payload.type}`)
-  //   }
-  // }
-  const s = { ...state };
-
-  for (const key in payload) {
-    // @ts-ignore
-    s[key] = payload[key];
-  }
-
-  return s;
-}
-
-function SessionProvider({ children }: { children: JSX.Element }) {
-  // @ts-ignore
-  const [state, dispatch] = React.useReducer(SessionReducer, null);
-  return (
-    // @ts-ignore
-    <SessionContext.Provider value={[state, dispatch]}>
-      {children}
-    </SessionContext.Provider>
-  );
-}
-
-function useSession() {
-  // @ts-ignore
-  const [state, setState] = React.useContext(SessionContext);
-  if (state === undefined) {
-    throw new Error("useSession must be used within a SessionProvider");
-  }
-
-  // simple check to ensure session has been captured.
-  if (!!!state) {
-    getSession()
-      .then((sess: SessionToken) => setState(sess))
-      .catch(e => console.log(e));
-  }
-
-  return [state, setState, !isEqual(state, {})];
-}
-
-const getSession = async () => {
-  return AuthService.getSession()
-    .then(res => {
-      if (res.data) return JSON.parse(res.data).result;
-      else return {};
-    })
-    .catch(e => {
-      throw e;
-    });
+type SessionContextType = {
+  session?: ISessionToken;
+  setSession: (session: ISessionToken) => void;
+  isLoggedIn: boolean;
 };
 
-export { SessionProvider, useSession };
+function createCtx<ContextType>() {
+  const ctx = React.createContext<ContextType>(undefined!);
+  function useSession() {
+    const c = React.useContext(ctx);
+    if (!c) throw new Error("useSession must be inside a SessionProvider");
+    return c;
+  }
+  return [useSession, ctx.Provider] as const;
+}
+
+const [useSession, CtxProvider] = createCtx<SessionContextType>();
+
+export const SessionProvider = ({ children }: { children: JSX.Element }) => {
+  const [session, setSession] = React.useState<ISessionToken>();
+
+  return (
+    <CtxProvider value={{ session, setSession, isLoggedIn: !!session?.user }}>
+      {children}
+    </CtxProvider>
+  );
+};
+
+export { useSession };
