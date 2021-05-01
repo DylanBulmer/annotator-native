@@ -95,7 +95,7 @@ export default function GoogleLogIn() {
   return (
     <Button
       loading={loading}
-      disabled={!request || loading}
+      disabled={!request || loading || isLoggedIn}
       mode="contained"
       onPress={() => {
         promptAsync({ useProxy });

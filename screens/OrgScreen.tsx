@@ -34,7 +34,7 @@ export default function OrgScreen({
 
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>Your Projects:</Text>
+      <Text style={styles.title}>Assigned Projects:</Text>
       {projects.length ? (
         projects.map(p => (
           <Card

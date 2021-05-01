@@ -27,7 +27,7 @@ export default function ProjectScreen({
 
   return (
     <Surface style={styles.innerContainer}>
-      <Text style={styles.title}>Your Datasets:</Text>
+      <Text style={styles.title}>Assigned Datasets:</Text>
       {availableDatasets.length ? (
         availableDatasets.map(d => (
           // only allow datasets assigned to current user.
